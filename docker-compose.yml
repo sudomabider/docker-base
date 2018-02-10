@@ -1,0 +1,7 @@
+version: '3'
+
+services:
+  php7-nginx:
+    build:
+      context: php7-nginx
+    image: sudomabider/php7-nginx
