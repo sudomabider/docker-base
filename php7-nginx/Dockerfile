@@ -4,16 +4,11 @@ RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-d
 
 RUN apk add --no-cache nginx supervisor
 
-RUN adduser -D -u 1000 -g 'www' www && \
-	mkdir /www && \
-	chown -R www:www /var/lib/nginx && \
-	chown -R www:www /www
-
-WORKDIR /www
+WORKDIR /app
 
 EXPOSE 80
 
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY supervisord.conf /etc/supervisord.conf
 
-CMD ["supervisord", "--nodaemon", "--configuration", "/etc/supervisord.conf"]
+CMD ["supervisord", "--configuration", "/etc/supervisord.conf"]
