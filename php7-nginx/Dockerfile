@@ -9,6 +9,7 @@ WORKDIR /app
 EXPOSE 80
 
 COPY nginx.conf /etc/nginx/nginx.conf
+COPY default.conf /etc/nginx/conf.d/default.conf
 COPY supervisord.conf /etc/supervisord.conf
 
 CMD ["supervisord", "--configuration", "/etc/supervisord.conf"]
