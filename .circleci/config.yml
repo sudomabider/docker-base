@@ -1,0 +1,30 @@
+version: 2
+jobs:
+  sqler:
+    docker:
+      - image: docker:edge-git
+    environment:
+      IMAGE_NAME: sudomabider/sqler
+      SQLER_VERSION: 2.1
+    steps:
+      - checkout
+      - setup_remote_docker: 
+          docker_layer_caching: true
+      - run:
+          name: Build image
+          command: |
+            docker build --cache-from=app --build-arg SQLER_VERSION=$SQLER_VERSION -t $IMAGE_NAME ./sqler 
+            docker tag $IMAGE_NAME $IMAGE_NAME:$SQLER_VERSION
+      - deploy:
+          name: Deploy image
+          command: |
+            echo $DOCKER_PASS | docker login --username $DOCKER_LOGIN --password-stdin
+            docker push $IMAGE_NAME:$SQLER_VERSION
+            docker push $IMAGE_NAME:latest
+
+workflows:
+  version: 2
+  build_and_deploy:
+    jobs:
+      - sqler:
+          context: docker-hub
