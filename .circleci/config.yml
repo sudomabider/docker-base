@@ -22,9 +22,33 @@ jobs:
             docker push $IMAGE_NAME:$SQLER_VERSION
             docker push $IMAGE_NAME:latest
 
+  php-nginx:
+    docker:
+      - image: docker:edge-git
+    environment:
+      IMAGE_NAME: sudomabider/php-nginx
+      PHP_VERSION: 7.3
+    steps:
+      - checkout
+      - setup_remote_docker: 
+          docker_layer_caching: true
+      - run:
+          name: Build image
+          command: |
+            docker build --cache-from=app --build-arg PHP_VERSION=$PHP_VERSION -t $IMAGE_NAME ./php-nginx
+            docker tag $IMAGE_NAME $IMAGE_NAME:$PHP_VERSION
+      - deploy:
+          name: Deploy image
+          command: |
+            echo $DOCKER_PASS | docker login --username $DOCKER_LOGIN --password-stdin
+            docker push $IMAGE_NAME:$PHP_VERSION
+            docker push $IMAGE_NAME:latest
+
 workflows:
   version: 2
   build_and_deploy:
     jobs:
       - sqler:
+          context: docker-hub
+      - php-nginx:
           context: docker-hub
