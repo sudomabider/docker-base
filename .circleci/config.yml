@@ -23,7 +23,7 @@ jobs:
       - run:
           name: Build Docker Image
           command: |
-            docker build --cache-from=${IMAGE_NAME} --build-arg VERSION=${VERSION} -t ${IMAGE_NAME}:${VERSION} ${FOLDER}
+            docker build --pull --cache-from=${IMAGE_NAME} --build-arg VERSION=${VERSION} -t ${IMAGE_NAME}:${VERSION} ${FOLDER}
             docker tag ${IMAGE_NAME}:${VERSION} ${IMAGE_NAME}
       - deploy:
           name: Push Docker Image
