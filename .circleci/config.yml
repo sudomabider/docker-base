@@ -9,14 +9,14 @@ jobs:
   build_and_push:
     executor: docker
     parameters:
-      name:
+      serviceName:
         type: string
-      version:
+      serviceVersion:
         type: string
     environment:
-      FOLDER: ./<< parameters.name >>
-      IMAGE_NAME: sudomabider/<< parameters.name >>
-      VERSION: << parameters.version >>
+      FOLDER: ./<< parameters.serviceName >>
+      IMAGE_NAME: sudomabider/<< parameters.serviceName >>
+      VERSION: << parameters.serviceVersion >>
     steps:
       - checkout
       - run:
@@ -37,24 +37,32 @@ workflows:
     jobs:
       - build_and_push:
           context: docker-hub
-          name: sqler
-          version: 2.1
+          serviceName: sqler
+          serviceVersion: 2.1
   php:
     jobs:
       - build_and_push:
           context: docker-hub
-          name: php
-          version: 7.3
+          serviceName: php
+          serviceVersion: 7.3
     triggers:
       - schedule:
           cron: "0 18 * * *"
+          filters:
+            branches:
+              only:
+                - master
 
   php-nginx:
     jobs:
       - build_and_push:
           context: docker-hub
-          name: php
-          version: 7.3
+          serviceName: php
+          serviceVersion: 7.3
     triggers:
       - schedule:
           cron: "0 18 * * *"
+          filters:
+            branches:
+              only:
+                - master
