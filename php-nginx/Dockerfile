@@ -1,6 +1,6 @@
-ARG PHP_VERSION
+ARG VERSION
 
-FROM php:${PHP_VERSION}-fpm-alpine
+FROM php:${VERSION}-fpm-alpine
 
 RUN php -r "readfile('https://getcomposer.org/installer');" | php -- --install-dir=/usr/local/bin --filename=composer && \
 composer global require hirak/prestissimo && \

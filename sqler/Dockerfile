@@ -1,10 +1,10 @@
 FROM alpine
 
-ARG SQLER_VERSION
+ARG VERSION
 
 RUN cd /tmp && \
 apk add --no-cache --virtual .build-deps curl unzip && \
-curl -f -L https://github.com/alash3al/sqler/releases/download/v${SQLER_VERSION}/sqler_linux_amd64.zip -o sqler.zip && \
+curl -f -L https://github.com/alash3al/sqler/releases/download/v${VERSION}/sqler_linux_amd64.zip -o sqler.zip && \
 unzip sqler.zip && \
 mv sqler_* /usr/local/bin/sqler && \
 apk del .build-deps

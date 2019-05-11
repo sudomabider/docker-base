@@ -1,63 +1,60 @@
 version: 2
-jobs:
-  sqler:
-    docker:
-      - image: docker:edge-git
-    environment:
-      IMAGE_NAME: sudomabider/sqler
-      SQLER_VERSION: 2.1
-    steps:
-      - checkout
-      - setup_remote_docker: 
-          docker_layer_caching: true
-      - run:
-          name: Build image
-          command: |
-            docker build --cache-from=app --build-arg SQLER_VERSION=$SQLER_VERSION -t $IMAGE_NAME ./sqler 
-            docker tag $IMAGE_NAME $IMAGE_NAME:$SQLER_VERSION
-      - deploy:
-          name: Deploy image
-          command: |
-            echo $DOCKER_PASS | docker login --username $DOCKER_LOGIN --password-stdin
-            docker push $IMAGE_NAME:$SQLER_VERSION
-            docker push $IMAGE_NAME:latest
 
-  php-nginx:
+executor:
+  docker:
     docker:
       - image: docker:edge-git
+
+jobs:
+  build_and_push:
+    executor: docker
+    parameters:
+      name:
+        type: string
+      version:
+        type: string
     environment:
-      IMAGE_NAME: sudomabider/php-nginx
-      PHP_VERSION: 7.3
+      FOLDER: ./<< parameters.name >>
+      IMAGE_NAME: sudomabider/<< parameters.name >>
+      VERSION: << parameters.version >>
     steps:
       - checkout
-      - setup_remote_docker: 
-          docker_layer_caching: true
       - run:
-          name: Build image
+          name: Build Docker Image
           command: |
-            docker build --cache-from=app --build-arg PHP_VERSION=$PHP_VERSION -t $IMAGE_NAME ./php-nginx
-            docker tag $IMAGE_NAME $IMAGE_NAME:$PHP_VERSION
+            docker build --cache-from=${IMAGE_NAME} --build-arg VERSION=${VERSION} -t ${IMAGE_NAME} ${FOLDER}
+            docker tag ${IMAGE_NAME}:${VERSION} ${IMAGE_NAME}
       - deploy:
-          name: Deploy image
+          name: Push Docker Image
           command: |
             echo $DOCKER_PASS | docker login --username $DOCKER_LOGIN --password-stdin
-            docker push $IMAGE_NAME:$PHP_VERSION
-            docker push $IMAGE_NAME:latest
+            docker push ${IMAGE_NAME}:${VERSION}
+            docker push ${IMAGE_NAME}:latest
 
 workflows:
   version: 2
-  build_sqler:
+  sqler:
     jobs:
-      - sqler:
+      - build_and_push:
           context: docker-hub
-  build_php:
+          name: sqler
+          version: 2.1
+  php:
     jobs:
-      - php-nginx:
+      - build_and_push:
           context: docker-hub
+          name: php
+          version: 7.3
     triggers:
       - schedule:
-          cron: "0 20 * * *"
-          filters:
-            branches:
-              only:
-                - master
+          cron: "0 18 * * *"
+
+  php-nginx:
+    jobs:
+      - build_and_push:
+          context: docker-hub
+          name: php
+          version: 7.3
+    triggers:
+      - schedule:
+          cron: "0 18 * * *"
