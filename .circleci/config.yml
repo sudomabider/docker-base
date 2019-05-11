@@ -1,6 +1,6 @@
 version: 2.1
 
-executor:
+executors:
   docker:
     docker:
       - image: docker:edge-git
@@ -32,7 +32,6 @@ jobs:
             docker push ${IMAGE_NAME}:latest
 
 workflows:
-  version: 2
   sqler:
     jobs:
       - build_and_push:
