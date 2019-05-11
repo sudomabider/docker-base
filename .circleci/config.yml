@@ -38,13 +38,13 @@ workflows:
       - build_and_push:
           context: docker-hub
           serviceName: sqler
-          serviceVersion: 2.1
+          serviceVersion: "2.1"
   php:
     jobs:
       - build_and_push:
           context: docker-hub
           serviceName: php
-          serviceVersion: 7.3
+          serviceVersion: "7.3"
     triggers:
       - schedule:
           cron: "0 18 * * *"
@@ -58,7 +58,7 @@ workflows:
       - build_and_push:
           context: docker-hub
           serviceName: php
-          serviceVersion: 7.3
+          serviceVersion: "7.3"
     triggers:
       - schedule:
           cron: "0 18 * * *"
