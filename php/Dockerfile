@@ -7,6 +7,6 @@ COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
 
 RUN composer global require hirak/prestissimo
 
-WORKDIR /code
+WORKDIR /app
 
 ENTRYPOINT [ "/entrypoint.sh" ]
