@@ -21,8 +21,7 @@ jobs:
       - name: Build v1
         uses: actions/docker/cli@master
         with: 
-          # TODO: change back to VERSION=1 once 1.9 is tagged as 1
-          args: build --pull -f composer/Dockerfile --build-arg VERSION=1.9 -t sudomabider/composer:1 composer
+          args: build --pull -f composer/Dockerfile --build-arg VERSION=1 -t sudomabider/composer:1 composer
       - name: Tag latest
         uses: actions/docker/cli@master
         with: 
