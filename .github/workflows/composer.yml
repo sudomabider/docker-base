@@ -1,4 +1,4 @@
-name: Build and Push
+name: Build and Push Composer
 
 on: [push, pull_request]
 
@@ -11,11 +11,11 @@ jobs:
         env:
           DOCKER_USERNAME: sudomabider
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
-  build:
+  build_and_push:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
-      - name: Build v1 Image
+      - name: Build v1
         uses: actions/docker/cli@master
         with: 
           args: build --pull -f composer/Dockerfile --build-arg VERSION=1 -t sudomabider/composer:1 composer
@@ -23,17 +23,11 @@ jobs:
         uses: actions/docker/cli@master
         with: 
           args: tag sudomabider/composer:1 sudomabider/composer:latest
-  push_v1:
-    runs-on: ubuntu-latest
-    needs: [login, build]
-    steps:
-      - uses: actions/docker/cli@master
+      - name: Push v1
+        uses: actions/docker/cli@master
         with: 
           args: push sudomabider/composer:1
-  push_latest:
-    runs-on: ubuntu-latest
-    needs: [login, build]
-    steps:
-      - uses: actions/docker/cli@master
+      - name: Push latest
+        uses: actions/docker/cli@master
         with: 
           args: push sudomabider/composer:latest
