@@ -1,10 +1,12 @@
 name: Composer
 
-on: [push, pull_request]
-
-push:
-  paths:
-  - 'composer/*'
+on:
+  push:
+    paths:
+      - 'composer/*'
+  pull_request:
+    paths:
+      - 'composer/*'
 
 jobs:
   build-and-push:
