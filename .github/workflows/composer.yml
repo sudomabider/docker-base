@@ -2,8 +2,12 @@ name: Composer
 
 on: [push, pull_request]
 
+push:
+  paths:
+  - 'composer/*'
+
 jobs:
-  Build and Push:
+  build-and-push:
     runs-on: ubuntu-latest
     steps:
       - name: Docker Login
