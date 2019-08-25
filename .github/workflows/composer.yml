@@ -1,0 +1,36 @@
+name: Composer
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'composer/*'
+      - '.github/workflows/composer.yml'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Login
+        uses: actions/docker/login@master
+        env:
+          DOCKER_USERNAME: sudomabider
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: actions/checkout@v1
+      - name: Build v1
+        uses: actions/docker/cli@master
+        with: 
+          args: build --pull -f composer/Dockerfile --build-arg VERSION=1 -t sudomabider/composer:1 composer
+      - name: Tag latest
+        uses: actions/docker/cli@master
+        with: 
+          args: tag sudomabider/composer:1 sudomabider/composer:latest
+      - name: Push v1
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/composer:1
+      - name: Push latest
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/composer:latest
