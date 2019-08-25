@@ -1,0 +1,25 @@
+name: Build and Push
+
+on: [push, pull_request]
+
+jobs:
+  default:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - name: Docker Login
+        uses: actions/docker/login@master
+        env:
+          DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Build v1 Image
+        uses: actions/docker/cli@master
+        run: build -f composer/Dockerfile -t sudomabider/composer:1 composer
+      - name: Tag latest
+        uses: actions/docker/cli@master
+        run: tag sudomabider/composer:1 sudomabider/composer:latest
+      - name: Push Images
+        uses: actions/docker/cli@master
+        run: |
+          push sudomabider/composer:1
+          push sudomabider/composer:latest
