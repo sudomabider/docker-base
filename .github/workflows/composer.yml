@@ -20,9 +20,11 @@ jobs:
         uses: actions/docker/cli@master
         with: 
           args: tag sudomabider/composer:1 sudomabider/composer:latest
-      - name: Push Images
+      - name: Push v1 Image
         uses: actions/docker/cli@master
         with: 
-          args: |
-            push sudomabider/composer:1
-            push sudomabider/composer:latest
+          args: push sudomabider/composer:1
+      - name: Push latest Image
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/composer:latest
