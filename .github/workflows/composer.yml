@@ -2,10 +2,8 @@ name: Composer
 
 on:
   push:
-    paths:
-      - 'composer/*'
-      - '.github/workflows/composer.yml'
-  pull_request:
+    branches:
+      - master
     paths:
       - 'composer/*'
       - '.github/workflows/composer.yml'
