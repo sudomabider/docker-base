@@ -3,10 +3,14 @@ ARG FPM
 
 FROM php:${VERSION}-${FPM:+fpm-}alpine
 
-COPY --from=composer:1 /usr/bin/composer /usr/bin/composer
+ENV COMPOSER_HOME=/composer
 
-RUN composer global require hirak/prestissimo
+RUN docker-php-ext-install opcache
+
+COPY --from=sudomabider/composer /usr/bin/composer /usr/bin/composer
+COPY --from=sudomabider/composer /composer /composer
+
+COPY filesystem/ /
+RUN chmod +x /usr/local/bin/*
 
 WORKDIR /app
-
-ENTRYPOINT [ "/entrypoint.sh" ]

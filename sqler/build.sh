@@ -1,5 +1,7 @@
 #!/bin/sh
 
+set -e
+
 IMAGE=sudomabider/sqler
 VERSION=2.1
 
