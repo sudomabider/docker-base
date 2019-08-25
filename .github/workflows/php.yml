@@ -27,7 +27,7 @@ jobs:
       - name: Build ${{ matrix.version }}-${{ matrix.type }}
         uses: actions/docker/cli@master
         with: 
-          args: build --pull --build-arg VERSION=${{ matrix.version }} --build-arg TYPE=${{ matrix.type }} -t sudomabider/php:${{ matrix.version }}-${{ matrix.type }} .
+          args: build --pull -f php/Dockerfile --build-arg VERSION=${{ matrix.version }} --build-arg TYPE=${{ matrix.type }} -t sudomabider/php:${{ matrix.version }}-${{ matrix.type }} .
       - name: Push v1
         uses: actions/docker/cli@master
         with: 
