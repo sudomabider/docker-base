@@ -14,12 +14,15 @@ jobs:
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - name: Build v1 Image
         uses: actions/docker/cli@master
-        run: build -f composer/Dockerfile -t sudomabider/composer:1 composer
+        with: 
+          args: build -f composer/Dockerfile -t sudomabider/composer:1 composer
       - name: Tag latest
         uses: actions/docker/cli@master
-        run: tag sudomabider/composer:1 sudomabider/composer:latest
+        with: 
+          args: tag sudomabider/composer:1 sudomabider/composer:latest
       - name: Push Images
         uses: actions/docker/cli@master
-        run: |
-          push sudomabider/composer:1
-          push sudomabider/composer:latest
+        with: 
+          args: |
+            push sudomabider/composer:1
+            push sudomabider/composer:latest
