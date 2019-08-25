@@ -3,15 +3,16 @@ name: Build and Push
 on: [push, pull_request]
 
 jobs:
-  default:
-    runs-on: ubuntu-latest
+  login:
     steps:
-      - uses: actions/checkout@v1
       - name: Docker Login
         uses: actions/docker/login@master
         env:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+  build:
+    steps:
+      - uses: actions/checkout@v1
       - name: Build v1 Image
         uses: actions/docker/cli@master
         with: 
