@@ -15,7 +15,7 @@ jobs:
       - name: Build v1 Image
         uses: actions/docker/cli@master
         with: 
-          args: build -f composer/Dockerfile -t sudomabider/composer:1 composer
+          args: build --pull -f composer/Dockerfile --build-arg VERSION=1 -t sudomabider/composer:1 composer
       - name: Tag latest
         uses: actions/docker/cli@master
         with: 
