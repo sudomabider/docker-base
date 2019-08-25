@@ -1,9 +1,9 @@
-name: Build and Push Composer
+name: Composer
 
 on: [push, pull_request]
 
 jobs:
-  default:
+  Build and Push:
     runs-on: ubuntu-latest
     steps:
       - name: Docker Login
