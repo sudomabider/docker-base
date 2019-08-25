@@ -4,9 +4,11 @@ on:
   push:
     paths:
       - 'composer/*'
+      - '.github/workflows/composer.yml'
   pull_request:
     paths:
       - 'composer/*'
+      - '.github/workflows/composer.yml'
 
 jobs:
   build-and-push:

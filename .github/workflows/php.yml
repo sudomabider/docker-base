@@ -4,17 +4,19 @@ on:
   push:
     paths:
       - 'php/*'
+      - '.github/workflows/php.yml'
   pull_request:
     paths:
       - 'php/*'
+      - '.github/workflows/php.yml'
 
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
     strategy:
-    matrix:
-      version: [7.2, 7.3, 7]
-      type: [fpm, cli]
+      matrix:
+        version: [7.2, 7.3, 7]
+        type: [fpm, cli]
     steps:
       - name: Docker Login
         uses: actions/docker/login@master
