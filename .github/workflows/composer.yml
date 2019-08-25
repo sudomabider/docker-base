@@ -4,6 +4,7 @@ on: [push, pull_request]
 
 jobs:
   login:
+    runs-on: ubuntu-latest
     steps:
       - name: Docker Login
         uses: actions/docker/login@master
@@ -11,6 +12,7 @@ jobs:
           DOCKER_USERNAME: ${{ secrets.DOCKER_USERNAME }}
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
   build:
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
       - name: Build v1 Image
@@ -22,12 +24,14 @@ jobs:
         with: 
           args: tag sudomabider/composer:1 sudomabider/composer:latest
   push_v1:
+    runs-on: ubuntu-latest
     needs: [login, build]
     steps:
       - uses: actions/docker/cli@master
         with: 
           args: push sudomabider/composer:1
   push_latest:
+    runs-on: ubuntu-latest
     needs: [login, build]
     steps:
       - uses: actions/docker/cli@master
