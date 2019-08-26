@@ -21,7 +21,15 @@ jobs:
       - name: Build
         uses: actions/docker/cli@master
         with: 
-          args: build --pull -f phpab/Dockerfile --build-arg VERSION=1.25.6 -t sudomabider/phpab:1 phpab
+          args: build --pull -f phpab/Dockerfile --build-arg VERSION=1.25.6 -t sudomabider/phpab:1.25.6 phpab
+      - name: Tag minor version
+        uses: actions/docker/cli@master
+        with: 
+          args: tag sudomabider/phpab:1.25.6 sudomabider/phpab:1.25
+      - name: Tag major version
+        uses: actions/docker/cli@master
+        with: 
+          args: tag sudomabider/phpab:1.25 sudomabider/phpab:1
       - name: Tag latest
         uses: actions/docker/cli@master
         with: 
@@ -30,6 +38,14 @@ jobs:
         uses: actions/docker/cli@master
         with: 
           args: push sudomabider/phpab:1.25.6
+      - name: Push minor version
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/phpab:1.25
+      - name: Push major version
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/phpab:1
       - name: Push latest
         uses: actions/docker/cli@master
         with: 
