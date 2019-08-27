@@ -1,0 +1,52 @@
+name: Publish Phive
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'phive/*'
+      - '.github/workflows/phive.yml'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Docker Login
+        uses: actions/docker/login@master
+        env:
+          DOCKER_USERNAME: sudomabider
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: actions/checkout@v1
+      - name: Build
+        uses: actions/docker/cli@master
+        with: 
+          args: build --pull -f phive/Dockerfile --build-arg VERSION=0.12.4 -t sudomabider/phive:0.12.4 phive
+      - name: Tag minor version
+        uses: actions/docker/cli@master
+        with: 
+          args: tag sudomabider/phive:0.12.4 sudomabider/phive:0.12
+      - name: Tag major version
+        uses: actions/docker/cli@master
+        with: 
+          args: tag sudomabider/phive:0.12 sudomabider/phive:0
+      - name: Tag latest
+        uses: actions/docker/cli@master
+        with: 
+          args: tag sudomabider/phive:0.12.4 sudomabider/phive:latest
+      - name: Push versioned
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/phive:0.12.4
+      - name: Push minor version
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/phive:0.12
+      - name: Push major version
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/phive:0
+      - name: Push latest
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/phive:latest
