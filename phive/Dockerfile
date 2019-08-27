@@ -1,6 +1,6 @@
 FROM php:7-alpine
 
-RUN apk add --no-cache ncurses
+RUN apk add --no-cache ncurses gnupg
 
 ARG VERSION
 
