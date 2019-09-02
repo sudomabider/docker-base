@@ -14,7 +14,6 @@ jobs:
     strategy:
       matrix:
         version: [7.2, 7.3, 7]
-        type: [fpm]
     steps:
       - name: Docker Login
         uses: actions/docker/login@master
@@ -22,11 +21,11 @@ jobs:
           DOCKER_USERNAME: sudomabider
           DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
       - uses: actions/checkout@v1
-      - name: Build ${{ matrix.version }}-${{ matrix.type }}
+      - name: Build ${{ matrix.version }}
         uses: actions/docker/cli@master
         with: 
-          args: build --pull -f php-nginx/Dockerfile --build-arg PHP_VERSION=${{ matrix.version }} --build-arg PHP_TYPE=${{ matrix.type }} -t sudomabider/php-nginx:${{ matrix.version }}-${{ matrix.type }} php-nginx
+          args: build --pull -f php-nginx/Dockerfile --build-arg PHP_VERSION=${{ matrix.version }} -t sudomabider/php-nginx:${{ matrix.version }} php-nginx
       - name: Push v1
         uses: actions/docker/cli@master
         with: 
-          args: push sudomabider/php-nginx:${{ matrix.version }}-${{ matrix.type }}
+          args: push sudomabider/php-nginx:${{ matrix.version }}
