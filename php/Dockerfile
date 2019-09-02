@@ -9,6 +9,7 @@ RUN docker-php-ext-install opcache
 
 COPY --from=sudomabider/composer /usr/bin/composer /usr/bin/composer
 COPY --from=sudomabider/composer /composer /composer
+COPY --from=sudomabider/dope:0.0.1 /usr/local/bin/dope /usr/local/bin/dope
 
 COPY filesystem/ /
 RUN cp $PHP_INI_DIR/php.ini-production $PHP_INI_DIR/php.ini
