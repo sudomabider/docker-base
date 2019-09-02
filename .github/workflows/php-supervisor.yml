@@ -1,0 +1,32 @@
+name: PHP + Supervisor
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'php/*'
+      - '.github/workflows/php-supervisor.yml'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [7.2, 7.3, 7]
+        type: [fpm, cli]
+    steps:
+      - name: Docker Login
+        uses: actions/docker/login@master
+        env:
+          DOCKER_USERNAME: sudomabider
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: actions/checkout@v1
+      - name: Build ${{ matrix.version }}-${{ matrix.type }}
+        uses: actions/docker/cli@master
+        with: 
+          args: build --pull -f php-supervisor/Dockerfile --build-arg VERSION=${{ matrix.version }} --build-arg TYPE=${{ matrix.type }} -t sudomabider/php-supervisor:${{ matrix.version }}-${{ matrix.type }} php-supervisor
+      - name: Push v1
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/php-supervisor:${{ matrix.version }}-${{ matrix.type }}
