@@ -4,7 +4,7 @@ ARG TYPE
 FROM php:${VERSION}-${TYPE}-alpine
 
 ENV COMPOSER_HOME=/composer
-ENV ENABLE_OPCACHE=0
+ENV PHP_ENABLE_OPCACHE=0
 RUN docker-php-ext-install opcache
 
 COPY --from=sudomabider/composer /usr/bin/composer /usr/bin/composer
