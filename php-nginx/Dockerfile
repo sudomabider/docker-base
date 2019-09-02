@@ -9,3 +9,5 @@ chown -R www-data:www-data /var/lib/nginx
 COPY filesystem/ /
 
 EXPOSE 80
+
+ENV SUPERVISOR_ENABLE_CRON false
