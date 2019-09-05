@@ -1,0 +1,31 @@
+name: PHP Phusion
+
+on:
+  push:
+    branches:
+      - master
+    paths:
+      - 'php/*'
+      - '.github/workflows/php-phusion.yml'
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        version: [7.2, 7.3, 7]
+    steps:
+      - name: Docker Login
+        uses: actions/docker/login@master
+        env:
+          DOCKER_USERNAME: sudomabider
+          DOCKER_PASSWORD: ${{ secrets.DOCKER_PASSWORD }}
+      - uses: actions/checkout@v1
+      - name: Build ${{ matrix.version }}
+        uses: actions/docker/cli@master
+        with: 
+          args: build --pull -f php-phusion/Dockerfile --build-arg PHP_VERSION=${{ matrix.version }} -t sudomabider/php-phusion:${{ matrix.version }} php-phusion
+      - name: Push Image
+        uses: actions/docker/cli@master
+        with: 
+          args: push sudomabider/php-phusion:${{ matrix.version }}
