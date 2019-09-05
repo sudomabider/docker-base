@@ -30,7 +30,7 @@ jobs:
         uses: actions/docker/cli@master
         with: 
           args: push sudomabider/composer:1
-      - name: Push latest
+      - name: Push Latest
         uses: actions/docker/cli@master
         with: 
           args: push sudomabider/composer:latest
