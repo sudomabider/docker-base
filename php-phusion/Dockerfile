@@ -8,4 +8,6 @@ RUN apk add --no-cache nginx
 COPY --from=sudomabider/phusion /usr/local/bin/phusion /usr/local/bin/phusion
 COPY filesystem /
 
+EXPOSE 80
+
 CMD [ "phusion" ]
