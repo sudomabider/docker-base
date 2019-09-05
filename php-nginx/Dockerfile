@@ -3,8 +3,7 @@ ARG PHP_TYPE=fpm
 
 FROM sudomabider/php-supervisor:${PHP_VERSION}-${PHP_TYPE}
 
-RUN apk add --no-cache nginx && \
-chown -R www-data:www-data /var/lib/nginx
+RUN apk add --no-cache nginx
 
 COPY filesystem/ /
 
