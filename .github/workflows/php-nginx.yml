@@ -6,6 +6,8 @@ on:
       - master
     paths:
       - 'php-nginx/*'
+      - 'php-supervisor/*'
+      - 'php/*'
       - '.github/workflows/php-nginx.yml'
 
 jobs:
