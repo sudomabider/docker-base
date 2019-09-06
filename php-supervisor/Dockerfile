@@ -8,6 +8,7 @@ ENV SUPERVISOR_ENABLE_CRON true
 RUN apk add --no-cache supervisor && \
 mkdir -p /var/log/supervisor
 
-COPY filesystem /
+COPY supervisord.conf /etc/
+COPY cron.ini /etc/supervisor.d/
 
 CMD [ "supervisord", "-c", "/etc/supervisord.conf" ]
